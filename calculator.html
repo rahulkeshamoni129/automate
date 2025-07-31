@@ -1,49 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Simple Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Calculator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
-    input, button {
-      padding: 10px;
+
+    .calculator {
+      background-color: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 300px;
+      transition: transform 0.3s ease;
+    }
+
+    .calculator:hover {
+      transform: scale(1.03);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input[type="number"] {
+      width: 100px;
       margin: 5px;
+      padding: 10px;
       font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .buttons {
+      margin: 15px 0;
+    }
+
+    button {
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #333;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #fff;
     }
   </style>
 </head>
 <body>
 
-  <h2>Simple Calculator</h2>
+  <div class="calculator">
+    <h2>🧮 Simple Calculator</h2>
 
-  <input id="num1" type="number" placeholder="Enter number 1" />
-  <input id="num2" type="number" placeholder="Enter number 2" />
-  <br>
+    <input id="num1" type="number" placeholder="Number 1" />
+    <input id="num2" type="number" placeholder="Number 2" />
 
-  <button onclick="calculate('+')">+</button>
-  <button onclick="calculate('-')">-</button>
-  <button onclick="calculate('*')">*</button>
-  <button onclick="calculate('/')">/</button>
+    <div class="buttons">
+      <button onclick="calculate('+')">+</button>
+      <button onclick="calculate('-')">−</button>
+      <button onclick="calculate('*')">×</button>
+      <button onclick="calculate('/')">÷</button>
+    </div>
 
-  <h3 id="result">Result: </h3>
+    <h3 id="result">Result: --</h3>
+  </div>
+
+  <footer>Made with ❤️ using HTML, CSS & JS</footer>
 
   <script>
     function calculate(op) {
-      let a = parseFloat(document.getElementById("num1").value);
-      let b = parseFloat(document.getElementById("num2").value);
+      const a = parseFloat(document.getElementById("num1").value);
+      const b = parseFloat(document.getElementById("num2").value);
       let result;
 
       if (isNaN(a) || isNaN(b)) {
-        result = "Invalid input!";
+        result = "❌ Please enter valid numbers!";
       } else {
         switch (op) {
           case '+': result = a + b; break;
           case '-': result = a - b; break;
           case '*': result = a * b; break;
-          case '/': result = b !== 0 ? a / b : "Cannot divide by zero"; break;
+          case '/': result = b !== 0 ? a / b : "❌ Cannot divide by zero"; break;
         }
       }
 
