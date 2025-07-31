@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interactive Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Realistic Calculator</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      background: linear-gradient(to right, #1f4037, #99f2c8);
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
@@ -17,109 +16,128 @@
     }
 
     .calculator {
-      background-color: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      width: 300px;
-      transition: transform 0.3s ease;
+      background: #222;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      width: 320px;
+      padding: 20px;
+      color: white;
     }
 
-    .calculator:hover {
-      transform: scale(1.03);
-    }
-
-    h2 {
+    .display {
+      background: #000;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 28px;
+      text-align: right;
+      color: #0f0;
       margin-bottom: 20px;
-      color: #333;
-    }
-
-    input[type="number"] {
-      width: 100px;
-      margin: 5px;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      text-align: center;
+      height: 50px;
+      overflow-x: auto;
     }
 
     .buttons {
-      margin: 15px 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
     }
 
     button {
-      width: 50px;
-      height: 50px;
-      margin: 5px;
-      font-size: 20px;
+      padding: 20px;
+      font-size: 18px;
       font-weight: bold;
-      background-color: #4CAF50;
-      color: white;
       border: none;
-      border-radius: 50%;
+      border-radius: 10px;
+      background-color: #333;
+      color: white;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition: 0.2s ease;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #555;
     }
 
-    #result {
-      margin-top: 20px;
-      font-size: 20px;
-      color: #333;
+    .operator {
+      background-color: #ff9500;
+      color: white;
     }
 
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: #fff;
+    .operator:hover {
+      background-color: #e08600;
+    }
+
+    .equal {
+      background-color: #34c759;
+      grid-column: span 2;
+    }
+
+    .equal:hover {
+      background-color: #28a745;
+    }
+
+    .clear {
+      background-color: #ff3b30;
+    }
+
+    .clear:hover {
+      background-color: #cc2e26;
     }
   </style>
 </head>
 <body>
-
   <div class="calculator">
-    <h2>🧮 Simple Calculator</h2>
-
-    <input id="num1" type="number" placeholder="Number 1" />
-    <input id="num2" type="number" placeholder="Number 2" />
-
+    <div id="display" class="display">0</div>
     <div class="buttons">
-      <button onclick="calculate('+')">+</button>
-      <button onclick="calculate('-')">−</button>
-      <button onclick="calculate('*')">×</button>
-      <button onclick="calculate('/')">÷</button>
-    </div>
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button onclick="append('%')">%</button>
+      <button onclick="append('.')">.</button>
+      <button class="operator" onclick="append('/')">÷</button>
 
-    <h3 id="result">Result: --</h3>
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button class="operator" onclick="append('*')">×</button>
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button class="operator" onclick="append('-')">−</button>
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button class="operator" onclick="append('+')">+</button>
+
+      <button onclick="append('0')">0</button>
+      <button class="equal" onclick="calculate()">=</button>
+    </div>
   </div>
 
-  <footer>Made with ❤️ using HTML, CSS & JS</footer>
-
   <script>
-    function calculate(op) {
-      const a = parseFloat(document.getElementById("num1").value);
-      const b = parseFloat(document.getElementById("num2").value);
-      let result;
+    let display = document.getElementById('display');
 
-      if (isNaN(a) || isNaN(b)) {
-        result = "❌ Please enter valid numbers!";
+    function append(value) {
+      if (display.innerText === "0" || display.innerText === "Error") {
+        display.innerText = value;
       } else {
-        switch (op) {
-          case '+': result = a + b; break;
-          case '-': result = a - b; break;
-          case '*': result = a * b; break;
-          case '/': result = b !== 0 ? a / b : "❌ Cannot divide by zero"; break;
-        }
+        display.innerText += value;
       }
+    }
 
-      document.getElementById("result").innerText = "Result: " + result;
+    function clearDisplay() {
+      display.innerText = "0";
+    }
+
+    function calculate() {
+      try {
+        let expression = display.innerText.replace(/÷/g, "/").replace(/×/g, "*").replace(/−/g, "-");
+        let result = eval(expression);
+        display.innerText = result;
+      } catch {
+        display.innerText = "Error";
+      }
     }
   </script>
-
 </body>
 </html>
